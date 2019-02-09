@@ -16,8 +16,8 @@ SELECT o.*,
 	DATEPART(quarter, o.OrderDate) as QuarterOrder,
 	((DATEPART(month, o.OrderDate)-1)/4 +1) as ThirdOrder ,
         ol.Description,
-	    ol.UnitPrice,
-	    ol.Quantity 
+	ol.UnitPrice,
+	ol.Quantity 
  FROM Sales.Orders as o
 	LEFT JOIN Sales.OrderLines as ol ON ol.OrderID = o.OrderID
  WHERE o.PickingCompletedWhen IS NOT NULL 
