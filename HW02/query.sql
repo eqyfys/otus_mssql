@@ -102,6 +102,39 @@ GO
 --bulk out 
 exec master..xp_cmdshell 'bcp "[WideWorldImporters].Application.Countries" out  "D:\Countries.txt" -T -w -t! -S LAPTOP-6V77GOBE'
 
+--create table
+CREATE TABLE [Application].[CountriesRestored](
+	[CountryID] [int] NOT NULL,
+	[CountryName] [nvarchar](60) NOT NULL,
+	[FormalName] [nvarchar](60) NOT NULL,
+	[IsoAlpha3Code] [nvarchar](3) NULL,
+	[IsoNumericCode] [int] NULL,
+	[CountryType] [nvarchar](20) NULL,
+	[LatestRecordedPopulation] [bigint] NULL,
+	[Continent] [nvarchar](30) NOT NULL,
+	[Region] [nvarchar](30) NOT NULL,
+	[Subregion] [nvarchar](30) NOT NULL,
+	[Border] [geography] NULL,
+	[LastEditedBy] [int] NOT NULL,
+	[ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
+	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
+ CONSTRAINT [PK_Application_CountriesRestored] PRIMARY KEY CLUSTERED 
+(
+	[CountryID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [USERDATA],
+ CONSTRAINT [UQ_Application_CountriesRestored_CountryName] UNIQUE NONCLUSTERED 
+(
+	[CountryName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [USERDATA],
+ CONSTRAINT [UQ_Application_CountriesRestored_FormalName] UNIQUE NONCLUSTERED 
+(
+	[FormalName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [USERDATA],
+	PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
+) ON [USERDATA] TEXTIMAGE_ON [USERDATA]
+
+GO
+
 -- bulk in
 	BULK INSERT [WideWorldImporters].[Application].[CountriesRestored]
 				   FROM "D:\Countries.txt"
