@@ -88,3 +88,9 @@ SELECT DISTINCT c.CityID,
  JOIN Sales.InvoiceLines as il ON il.InvoiceID = i.InvoiceID
  JOIN Warehouse.StockItems as si ON si.StockItemID = il.StockItemID
  JOIN MostExpensiveItems as mei ON mei.StockItemID = si.StockItemID
+ 
+ 
+
+
+
+ 
