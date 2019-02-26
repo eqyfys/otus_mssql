@@ -39,10 +39,30 @@ WHERE i.InvoiceDate >= '2015-01-01'
 
 -- SQL Server Execution Times:
 --   CPU time = 547 ms,  elapsed time = 7756 ms.
-
+					
 --(затронуто строк: 31440)
 
 -- SQL Server Execution Times:
 --   CPU time = 10437 ms,  elapsed time = 10560 ms.
 
 -- вывод: запрос а работает быстрее
+					
+--2) 
+SELECT * FROM (
+  SELECT
+       DATEPART(month, i.InvoiceDate) as MonthOrders, 
+       DATENAME(month, i.InvoiceDate) as MonthNames, 
+       si.StockItemName as ItemName,
+       SUM(il.Quantity) as ItemsCount,
+       ROW_NUMBER() OVER (PARTITION BY DATEPART(month, i.InvoiceDate)
+			  ORDER BY SUM(il.Quantity) DESC) as PopularityOrder
+  FROM Sales.Invoices as i 
+  JOIN Sales.InvoiceLines as il ON il.InvoiceID = i.InvoiceID
+  JOIN Warehouse.StockItems as si ON si.StockItemID = il.StockItemID
+  WHERE i.InvoiceDate BETWEEN '2016-01-01' AND '2016-12-31'
+  GROUP BY DATEPART(month, i.InvoiceDate), DATENAME(month, i.InvoiceDate),  si.StockItemName
+) as tbl 
+  WHERE tbl.PopularityOrder IN (1,2)
+  ORDER BY tbl.MonthOrders, tbl.ItemsCount DESC
+					
+					
