@@ -63,6 +63,21 @@ SELECT * FROM (
   GROUP BY DATEPART(month, i.InvoiceDate), DATENAME(month, i.InvoiceDate),  si.StockItemName
 ) as tbl 
   WHERE tbl.PopularityOrder IN (1,2)
-  ORDER BY tbl.MonthOrders, tbl.ItemsCount DESC
+  ORDER BY tbl.MonthOrders, tbl.ItemsCount DESC;
+	
 					
+--3)
+SELECT si.StockItemID,
+       si.StockItemName, 
+       si.Brand,
+       si.UnitPrice,
+       ROW_NUMBER() OVER (PARTITION BY LEFT(si.StockItemName, 1) ORDER BY si.StockItemName) as FirstLetterOrder,
+       SUM(QuantityPerOuter) OVER() as CountAll,
+       SUM(QuantityPerOuter) OVER(PARTITION BY LEFT(si.StockItemName, 1) ORDER BY LEFT(si.StockItemName, 1)) as CountByLetter,
+       LEAD(StockItemID) OVER (ORDER BY si.StockItemName) as NextID,
+       LAG(StockItemID) OVER (ORDER BY si.StockItemName) as PreviosID,
+       LAG(si.StockItemName, 2, 'No items') OVER (ORDER BY si.StockItemName) as PreviosItemName,
+       NTILE (30) OVER (ORDER BY si.TypicalWeightPerUnit) as GroupOrder 	  
+FROM Warehouse.StockItems as si
+ORDER BY si.StockItemName;
 					
