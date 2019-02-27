@@ -101,4 +101,28 @@ FROM (
 	JOIN Sales.Customers as c ON c.CustomerID = i.CustomerID
 ) as tbl 
 WHERE tbl.InvoiceDateOrder = 1;
-					
+										       
+--5)
+SELECT     tbl.CustomerID,
+           tbl.CustomerName,
+           tbl.StockItemID,
+	   tbl.StockItemName,
+	   tbl.UnitPrice,
+	   tbl.InvoiceDate
+FROM (
+    SELECT c.CustomerID,
+           c.CustomerName,
+	   si.StockItemID,
+	   si.StockItemName,
+	   si.UnitPrice,
+	   MAX(i.InvoiceDate) as InvoiceDate,
+	   ROW_NUMBER() OVER (PARTITION BY c.CustomerID ORDER BY si.UnitPrice DESC) as PrcieOrder
+    FROM Sales.Invoices as i
+    JOIN Sales.InvoiceLines as il ON il.InvoiceID = i.InvoiceID
+    JOIN Sales.Customers as c ON c.CustomerID = i.CustomerID
+    JOIN Warehouse.StockItems as si ON si.StockItemID = il.StockItemID
+    GROUP BY c.CustomerID, c.CustomerName, si.StockItemID, si.StockItemName, si.UnitPrice  --группировка нужна, чтобы убрать дублирующиеся товары
+) as tbl
+WHERE tbl.PrcieOrder IN (1, 2);
+	
+										       
