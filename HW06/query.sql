@@ -64,7 +64,6 @@ SELECT * FROM (
 ) as tbl 
   WHERE tbl.PopularityOrder IN (1,2)
   ORDER BY tbl.MonthOrders, tbl.ItemsCount DESC;
-	
 					
 --3)
 SELECT si.StockItemID,
@@ -80,4 +79,26 @@ SELECT si.StockItemID,
        NTILE (30) OVER (ORDER BY si.TypicalWeightPerUnit) as GroupOrder 	  
 FROM Warehouse.StockItems as si
 ORDER BY si.StockItemName;
+
+--4)
+SELECT     tbl.SalespersonPersonID,
+	   tbl.FullName,
+	   tbl.CustomerID,
+	   tbl.CustomerName,
+	   tbl.InvoiceDate,
+	   tbl.DealSumm as DealSumm
+FROM (
+	SELECT     i.SalespersonPersonID,
+	           p.FullName,
+		   c.CustomerID,
+		   c.CustomerName,
+		   i.InvoiceDate,
+		   ct.TransactionAmount as DealSumm,
+		   ROW_NUMBER() OVER (PARTITION BY  SalespersonPersonID ORDER BY i.InvoiceDate DESC) as InvoiceDateOrder
+	FROM  Sales.Invoices as i
+	JOIN Sales.CustomerTransactions as ct ON ct.InvoiceID = i.InvoiceID
+	JOIN Application.People as p ON p.PersonID = i.SalespersonPersonID
+	JOIN Sales.Customers as c ON c.CustomerID = i.CustomerID
+) as tbl 
+WHERE tbl.InvoiceDateOrder = 1;
 					
