@@ -125,4 +125,14 @@ FROM (
 ) as tbl
 WHERE tbl.PrcieOrder IN (1, 2);
 	
-										       
+--6) bonus										       
+SELECT TOP 10
+       c.CustomerID,
+       c.CustomerName,
+       COUNT(o.OrderID) as OrdersCount,
+       MAX(o.OrderDate) as LastOrderDate
+FROM Sales.Customers as c
+JOIN Sales.Orders as o ON o.CustomerID = c.CustomerID
+GROUP BY c.CustomerID, c.CustomerName
+HAVING  COUNT(o.OrderID) > 30 AND MAX(o.OrderDate) < '2016-04-30'
+ORDER BY OrdersCount;
