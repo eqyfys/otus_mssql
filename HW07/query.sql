@@ -40,3 +40,10 @@ JOIN Sales.Customers as c ON c.CustomerID = ct.CustomerID
 WHERE i.InvoiceDate >= '2015-01-01'
 
 SELECT * FROM @CustomersSumm
+							 
+--Анализ планов: планы запросов отличаются, но самая затратная по стоимости операция одна и та же - 
+--   это Hash Matсh таблиц CustomerTransactions и Invoices по полю InvoiceID. И там , и там это 80% от стоимости запроса (7366037 строк).
+--Оптимизация этих запросов в первую очередь заключалась бы, полагаю, 
+-- в создании ключа по InvoceID при создании таблицы или табличной переменной. 							 
+							 
+							 
