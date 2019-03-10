@@ -45,3 +45,23 @@ FROM (
 	FROM Application.Countries  as  c
 ) as tbl
 UNPIVOT (Code FOR CodeColumns IN (StringCode, NumericCode)) as unpvt;
+				  
+--4)
+SELECT c.CustomerID,
+       c.CustomerName,
+       tbl.StockItemID,
+       tbl.StockItemName,
+       tbl.UnitPrice,
+       tbl.InvoiceDate 
+FROM Sales.Customers as c
+CROSS APPLY (SELECT TOP 2 si.StockItemID,
+	                  si.StockItemName,
+			  si.UnitPrice,
+			  MAX(i.InvoiceDate) as InvoiceDate
+	      FROM  Warehouse.StockItems as si
+	      JOIN Sales.InvoiceLines as il ON il.StockItemID = si.StockItemID
+	      JOIN Sales.Invoices as i ON i.InvoiceID = il.InvoiceID
+	      WHERE i.CustomerID = c.CustomerID
+	      GROUP BY si.StockItemID, si.StockItemName, si.UnitPrice
+	      ORDER BY si.UnitPrice DESC) as tbl
+ORDER BY c.CustomerID;
