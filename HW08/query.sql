@@ -19,3 +19,16 @@ PIVOT (
    FOR [CustomerName] IN ([Sylvanite, MT], [Peeples Valley, AZ], [Medicine Lodge, KS],[Gasport, NY], [Jessie, ND])
 ) as pvt
 ORDER BY InvoiceMonthFormat;  -- по дате в формате dd.MM.yyyy сортировка работает некорректно
+												      
+--3)
+ SELECT unpvt.CountryID,
+        unpvt.CountryName,
+	unpvt.Code
+FROM (
+	SELECT c.CountryID,
+	       c.CountryName,
+	       c.IsoAlpha3Code as StringCode,
+	       CAST(c.IsoNumericCode as nvarchar(3)) as NumericCode
+	FROM Application.Countries  as  c
+) as tbl
+UNPIVOT (Code FOR CodeColumns IN (StringCode, NumericCode)) as unpvt;
