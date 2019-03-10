@@ -20,6 +20,19 @@ PIVOT (
 ) as pvt
 ORDER BY InvoiceMonthFormat;  -- по дате в формате dd.MM.yyyy сортировка работает некорректно
 												      
+--2)
+SELECT unpvt.CustomerName,
+       unpvt.ResultAddress
+FROM (
+      SELECT 
+       c.CustomerName,
+       c.DeliveryAddressLine1 as Address1,
+       c.DeliveryAddressLine2 as Addrees2
+      FROM Sales.Customers as c 
+      WHERE c.CustomerName LIKE '%Tailspin Toys%'
+) as tbl
+UNPIVOT (ResultAddress FOR AdressColumns IN (Address1, Addrees2)) as unpvt;
+												      
 --3)
  SELECT unpvt.CountryID,
         unpvt.CountryName,
