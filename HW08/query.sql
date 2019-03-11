@@ -1,10 +1,10 @@
 --1)
 SELECT FORMAT(InvoiceMonthFormat, 'dd.MM.yyyy') as InvoiceMonth,
        pvt.[Sylvanite, MT],
-		   pvt.[Peeples Valley, AZ],
-		   pvt.[Medicine Lodge, KS],
-		   pvt.[Gasport, NY],
-		   pvt.[Jessie, ND]
+       pvt.[Peeples Valley, AZ],
+       pvt.[Medicine Lodge, KS],
+       pvt.[Gasport, NY],
+       pvt.[Jessie, ND]
 FROM (
    SELECT 
       (SELECT DATEFROMPARTS(YEAR(i.InvoiceDate), MONTH(i.InvoiceDate), 1)) as InvoiceMonthFormat,
@@ -34,7 +34,7 @@ FROM (
 UNPIVOT (ResultAddress FOR AdressColumns IN (Address1, Addrees2)) as unpvt;
 												      
 --3)
- SELECT unpvt.CountryID,
+SELECT unpvt.CountryID,
         unpvt.CountryName,
 	unpvt.Code
 FROM (
