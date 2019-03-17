@@ -122,3 +122,20 @@ CREATE TABLE [Food].[Items](
 ) ON [PRIMARY]
 GO
 
+--5) Создание таблицы Orders
+CREATE TABLE [Food].[Orders](
+	[OrderID] [int] NOT NULL,
+	[CustomerID] [int] NOT NULL,
+	[OrderDate] [datetime]  NOT NULL,
+	[Status] nvarchar(20),
+	[SectorNumber] [int]  NOT NULL,
+	[RowNumber] [int] NOT NULL,
+	[PlaceNumber] [int] NOT NULL,
+	[Comms] [nvarchar](500) NULL,
+ CONSTRAINT [PK_Food_Orders] PRIMARY KEY CLUSTERED 
+(
+	[OrderID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
