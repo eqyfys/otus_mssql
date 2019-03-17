@@ -85,4 +85,13 @@ IF NOT EXISTS (SELECT name FROM sys.filegroups WHERE is_default=1 AND name = N'P
 GO
 
 
---2)
+--2) Создание схемы
+
+USE [StadiumServices]
+GO
+CREATE SCHEMA [Food] AUTHORIZATION [db_owner]
+GO
+
+--3)
+
+
