@@ -92,6 +92,20 @@ GO
 CREATE SCHEMA [Food] AUTHORIZATION [db_owner]
 GO
 
---3)
+--3) Создание таблицы Customers
+
+CREATE TABLE [Food].[Customers] 
+(
+ [CustomerID] [int] NOT NULL,
+	[PhoneNumber] [nvarchar](20) NOT NULL,
+	[CustomerName] [nvarchar](150) NOT NULL,
+	[RegistrationDate] [datetime] NOT NULL,
+	[Comms] [nvarchar](500),
+CONSTRAINT [PK_Food_Customers] PRIMARY KEY CLUSTERED 
+(
+  [CustomerID] ASC
+)
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+)
 
 
