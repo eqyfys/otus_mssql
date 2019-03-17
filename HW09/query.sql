@@ -1,5 +1,4 @@
 --1) создание базы данных
-
 CREATE DATABASE [StadiumServices]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -86,14 +85,12 @@ GO
 
 
 --2) Создание схемы
-
 USE [StadiumServices]
 GO
 CREATE SCHEMA [Food] AUTHORIZATION [db_owner]
 GO
 
 --3) Создание таблицы Customers
-
 CREATE TABLE [Food].[Customers] 
 (
  [CustomerID] [int] NOT NULL,
@@ -138,4 +135,21 @@ CREATE TABLE [Food].[Orders](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+		 
+--6)  Создание таблицы OrderItems
+CREATE TABLE [Food].[OrderItems](
+        [OrderItemID] [int] NOT NULL,
+	[OrderID] [int] NOT NULL,
+	[ItemID] [int]  NOT NULL,
+	[Quantity] [int] NOT NULL,
+	[Price] [decimal](18,2) NOT NULL,
+	[Comms] [nvarchar](500) NULL,
+ CONSTRAINT [PK_Food_OrderItems] PRIMARY KEY CLUSTERED 
+(
+	[OrderItemID]  ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
 
