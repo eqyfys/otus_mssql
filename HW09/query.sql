@@ -40,7 +40,7 @@ CREATE TABLE [Food].[Orders](
 	[OrderID] [int] NOT NULL,
 	[CustomerID] [int] NOT NULL,
 	[OrderDate] [datetime]  NOT NULL,
-	[Status] nvarchar(20),
+	[Status] nvarchar(20) CHECK ([Status] IN ('новый', 'в работе', 'готов к доставке', 'доставка', 'закрыт')),
 	[SectorNumber] [int]  NOT NULL,
 	[RowNumber] [int] NOT NULL,
 	[PlaceNumber] [int] NOT NULL,
