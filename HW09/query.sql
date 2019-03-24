@@ -27,7 +27,7 @@ CREATE TABLE [Food].[Items](
 	[ItemName] [nvarchar](200) NOT NULL,
 	[Price] [decimal] (18,2) NOT NULL,
 	[Balance] [int]  NOT NULL,
-	[Comms] [nvarchar](500) NULL,
+	[Comments] [nvarchar](500) NULL,
  CONSTRAINT [PK_Food_Items] PRIMARY KEY CLUSTERED 
 (
 	[ItemID] ASC
@@ -44,7 +44,7 @@ CREATE TABLE [Food].[Orders](
 	[SectorNumber] [int]  NOT NULL,
 	[RowNumber] [int] NOT NULL,
 	[PlaceNumber] [int] NOT NULL,
-	[Comms] [nvarchar](500) NULL,
+	[Comments] [nvarchar](500) NULL,
  CONSTRAINT [PK_Food_Orders] PRIMARY KEY CLUSTERED 
 (
 	[OrderID] ASC
@@ -59,7 +59,7 @@ CREATE TABLE [Food].[OrderItems](
 	[ItemID] [int]  NOT NULL,
 	[Quantity] [int] NOT NULL,
 	[Price] [decimal](18,2) NOT NULL,
-	[Comms] [nvarchar](500) NULL,
+	[Comments] [nvarchar](500) NULL,
  CONSTRAINT [PK_Food_OrderItems] PRIMARY KEY CLUSTERED 
 (
 	[OrderItemID]  ASC
@@ -75,7 +75,7 @@ CREATE TABLE [Food].[ItemsHistory](
 	[ActionUser] [nvarchar] (100) NOT NULL,
 	[Price] [decimal] (18,2) NOT NULL,
 	[Balance] [int]  NOT NULL,
-	[Comms] [nvarchar](500) NULL,
+	[Comments] [nvarchar](500) NULL,
  CONSTRAINT [PK_Food_ItemsActions] PRIMARY KEY CLUSTERED 
 (
 	[ItemsHistoryID] ASC
