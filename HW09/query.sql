@@ -67,5 +67,20 @@ CREATE TABLE [Food].[OrderItems](
 )
 GO
 
-
+--7) Создание таблички ItemsHistory
+CREATE TABLE [Food].[ItemsHistory](
+	[ItemsHistoryID] [int] NOT NULL,
+	[ItemID] [int] NOT NULL,
+	[ActionType] [nvarchar](50) NOT NULL,
+	[ActionDate] [datetime] NOT NULL,
+	[ActionUser] [nvarchar] (100) NOT NULL,
+	[Price] [decimal] (18,2) NOT NULL,
+	[Balance] [int]  NOT NULL,
+	[Comms] [nvarchar](500) NULL,
+ CONSTRAINT [PK_Food_ItemsActions] PRIMARY KEY CLUSTERED 
+(
+	[ItemsHistoryID] ASC
+)
+)
+GO
 
