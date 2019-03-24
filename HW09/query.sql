@@ -71,7 +71,6 @@ GO
 CREATE TABLE [Food].[ItemsHistory](
 	[ItemsHistoryID] [int] NOT NULL,
 	[ItemID] [int] NOT NULL,
-	[ActionType] [nvarchar](50) NOT NULL,
 	[ActionDate] [datetime] NOT NULL,
 	[ActionUser] [nvarchar] (100) NOT NULL,
 	[Price] [decimal] (18,2) NOT NULL,
