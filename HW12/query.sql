@@ -54,3 +54,17 @@ ON (source.StockItemName = target.StockItemName)
                   source.IsChillerStock, source.TaxRate, source.UnitPrice, source.LastEditedBy);       
 
 EXEC sp_xml_removedocument @handle
+
+--2)
+SELECT  StockItemName as '@Name',
+	SupplierID,
+	UnitPackageID as 'Package/UnitPackageID',
+	OuterPackageID as 'Package/OuterPackageID',
+	QuantityPerOuter as 'Package/QuantityPerOuter',
+	TypicalWeightPerUnit as 'Package/TypicalWeightPerUnit',
+	LeadTimeDays,
+	IsChillerStock,
+	TaxRate,
+	UnitPrice
+FROM Warehouse.StockItems FOR XML PATH('Item'), TYPE,  ELEMENTS, ROOT('StockItems');
+
