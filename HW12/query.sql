@@ -82,3 +82,33 @@ SELECT StockItemID,
 FROM Warehouse.StockItems   
 WHERE JSON_QUERY(CustomFields, '$.Tags') LIKE '%Vintage%'
 
+--5)
+
+DECLARE @cols nvarchar(MAX)
+SET @cols = (SELECT DISTINCT CustomerName FROM Sales.Customers  FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER)
+SET @cols = (SELECT REPLACE(@cols, '"CustomerName":', ''))
+SET @cols = (SELECT REPLACE(@cols, '{', '['))
+SET @cols = (SELECT REPLACE(@cols, '}', ']'))
+SET @cols = (SELECT REPLACE(@cols, '"', ''))
+
+
+DECLARE @query nvarchar(MAX)
+SET @query = N'
+SELECT FORMAT(InvoiceMonthFormat, ''dd.MM.yyyy'') as InvoiceMonth ,
+      pvt.* 
+FROM (
+   SELECT 
+       (SELECT DATEFROMPARTS(YEAR(i.InvoiceDate), MONTH(i.InvoiceDate), 1)) as InvoiceMonthFormat,
+       CustomerName,
+      i.InvoiceID
+   FROM Sales.Invoices as i
+   JOIN Sales.Customers as c on c.CustomerID = i.CustomerID
+   --WHERE c.CustomerID IN (2,3,4,5,6)
+) as tbl
+PIVOT (
+   COUNT(InvoiceID)
+   FOR [CustomerName] IN ( ' + @cols +')
+) as pvt
+ORDER BY InvoiceMonthFormat; '
+
+EXEC (@query)
