@@ -1,5 +1,4 @@
 --1)
-
 DECLARE @handle int
 DECLARE @tbl XML
 SET @tbl = (SELECT * FROM OPENROWSET (BULK 'D:\StockItems.xml', SINGLE_CLOB) as FromFile)
@@ -56,7 +55,6 @@ ON (source.StockItemName = target.StockItemName)
 EXEC sp_xml_removedocument @handle
 
 --2)
-
 SELECT  StockItemName as '@Name',
 	SupplierID,
 	UnitPackageID as 'Package/UnitPackageID',
@@ -70,11 +68,17 @@ SELECT  StockItemName as '@Name',
 FROM Warehouse.StockItems FOR XML PATH('Item'), TYPE,  ELEMENTS, ROOT('StockItems');
 
 --3)
-
-SELECT
-      StockItemID,
-      StockItemName,
-      CountryOfManufacture = JSON_VALUE(CustomFields, '$.CountryOfManufacture'),
-      Range = JSON_VALUE(CustomFields, '$.Range')
+SELECT StockItemID,
+       StockItemName,
+       CountryOfManufacture = JSON_VALUE(CustomFields, '$.CountryOfManufacture'),
+       Range = JSON_VALUE(CustomFields, '$.Range')
 FROM Warehouse.StockItems 
+
+--4)
+SELECT StockItemID,
+       StockItemName,
+       JSON_QUERY(CustomFields, '$.Tags') as Tags,
+       CustomFields
+FROM Warehouse.StockItems   
+WHERE JSON_QUERY(CustomFields, '$.Tags') LIKE '%Vintage%'
 
