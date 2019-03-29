@@ -9,15 +9,15 @@ MERGE WareHouse.StockItems as target
 USING(
 	SELECT Name as StockItemName,
 	       SupplierID,
-		     UnitPackageID,
-		     OuterPackageID,
-		     QuantityPerOuter,
-		     TypicalWeightPerUnit,
-		     LeadTimeDays,
-		     IsChillerStock,
-		     TaxRate,
-		     UnitPrice,
-		     1 as LastEditedBy
+	       UnitPackageID,
+	       OuterPackageID,
+	       QuantityPerOuter,
+	       TypicalWeightPerUnit,
+	       LeadTimeDays,
+	       IsChillerStock,
+	       TaxRate,
+	       UnitPrice,
+	       1 as LastEditedBy
 	FROM OPENXML(@handle, N'/StockItems/Item', 3)
 	WITH ( 
 		[Name] nvarchar(100),
@@ -48,7 +48,7 @@ ON (source.StockItemName = target.StockItemName)
 	WHEN NOT MATCHED 
 	    THEN INSERT (StockItemName, SupplierID, UnitPackageID, OuterPackageID, QuantityPerOuter, 
                    TypicalWeightPerUnit, LeadTimeDays, IsChillerStock, TaxRate,  UnitPrice, LastEditedBy)
-		      VALUES (source.StockItemName, source.SupplierID, source.UnitPackageID, source.OuterPackageID, 
+		 VALUES (source.StockItemName, source.SupplierID, source.UnitPackageID, source.OuterPackageID, 
                   source.QuantityPerOuter, source.TypicalWeightPerUnit, source.LeadTimeDays,
                   source.IsChillerStock, source.TaxRate, source.UnitPrice, source.LastEditedBy);       
 
@@ -83,7 +83,7 @@ FROM Warehouse.StockItems
 WHERE JSON_QUERY(CustomFields, '$.Tags') LIKE '%Vintage%'
 
 --5)
-
+--формируем строку со стоблцами (для этого грузим нужные значения в json, затем обрабатываем)
 DECLARE @cols nvarchar(MAX)
 SET @cols = (SELECT DISTINCT CustomerName FROM Sales.Customers  FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER)
 SET @cols = (SELECT REPLACE(@cols, '"CustomerName":', ''))
@@ -91,24 +91,22 @@ SET @cols = (SELECT REPLACE(@cols, '{', '['))
 SET @cols = (SELECT REPLACE(@cols, '}', ']'))
 SET @cols = (SELECT REPLACE(@cols, '"', ''))
 
-
+--составляем запрос  вместе с сформированной строкой стоблцов и выполняем его
 DECLARE @query nvarchar(MAX)
 SET @query = N'
-SELECT FORMAT(InvoiceMonthFormat, ''dd.MM.yyyy'') as InvoiceMonth ,
-      pvt.* 
+SELECT * 
 FROM (
    SELECT 
-       (SELECT DATEFROMPARTS(YEAR(i.InvoiceDate), MONTH(i.InvoiceDate), 1)) as InvoiceMonthFormat,
+       (FORMAT(DATEFROMPARTS(YEAR(i.InvoiceDate), MONTH(i.InvoiceDate), 1), ''dd.MM.yyyy'')) as InvoiceMonth,
        CustomerName,
-      i.InvoiceID
+       i.InvoiceID
    FROM Sales.Invoices as i
    JOIN Sales.Customers as c on c.CustomerID = i.CustomerID
-   --WHERE c.CustomerID IN (2,3,4,5,6)
 ) as tbl
 PIVOT (
    COUNT(InvoiceID)
    FOR [CustomerName] IN ( ' + @cols +')
 ) as pvt
-ORDER BY InvoiceMonthFormat; '
+ORDER BY InvoiceMonth; '
 
 EXEC (@query)
