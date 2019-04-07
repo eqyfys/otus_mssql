@@ -75,12 +75,14 @@ SELECT StockItemID,
 FROM Warehouse.StockItems 
 
 --4)
-SELECT StockItemID,
-       StockItemName,
-       JSON_QUERY(CustomFields, '$.Tags') as Tags,
-       CustomFields
-FROM Warehouse.StockItems   
-WHERE JSON_QUERY(CustomFields, '$.Tags') LIKE '%Vintage%'
+SELECT si.StockItemID,
+       si.StockItemName,
+       si.CustomFields,
+       jsonVal.*
+FROM Warehouse.StockItems as si
+CROSS APPLY OPENJSON(JSON_QUERY(si.CustomFields, '$.Tags'))  as jsonVal
+WHERE jsonVal.value = 'Vintage'
+
 
 --5)
 --формируем строку со стоблцами (для этого грузим нужные значения в json, затем обрабатываем)
