@@ -62,5 +62,21 @@ GO
 --Планы оказалаись практически идентичными, в обоих случаях 100% стоимость - просмотр кластерного индекса табл. CustomerTransactions. 
 --Поэтому разницы в производительности не наблюдается. 
 
+--4)
 
 
+CREATE FUNCTION [Sales].[GetOrdersBySalesPerson]
+(	
+	@SalesPersonID int
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	SELECT OrderID, CustomerID, OrderDate FROM Sales.Orders WHERE SalespersonPersonID = @SalesPersonID
+)
+GO
+
+
+ SELECT PersonID, FullName, o.* FROM Application.People as p
+ CROSS APPLY (SELECT * FROM [Sales].[GetOrdersBySalesPerson] (p.PersonID)) as o
