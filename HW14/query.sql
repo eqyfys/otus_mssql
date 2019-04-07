@@ -29,3 +29,38 @@ BEGIN
 END
 GO
 
+--3)
+
+CREATE FUNCTION [Sales].[GetTranSummByDate]
+(
+	@TransactionDate datetime
+)
+RETURNS decimal(18,2)
+AS
+BEGIN
+    DECLARE @Result decimal(18,2)
+
+    SET @Result = (SELECT SUM(TransactionAmount)
+	           FROM Sales.CustomerTransactions
+	           WHERE TransactionDate = @TransactionDate)
+    RETURN @Result
+END
+GO
+
+CREATE PROCEDURE  [Sales].[GetTranSummByTranDate]
+	@TransactionDate datetime
+AS
+BEGIN
+	SELECT SUM(TransactionAmount) as Result
+	       FROM Sales.CustomerTransactions
+		   WHERE TransactionDate = @TransactionDate
+END
+GO
+
+
+--Сравнение производительности:
+--Планы оказалаись практически идентичными, в обоих случаях 100% стоимость - просмотр кластерного индекса табл. CustomerTransactions. 
+--Поэтому разницы в производительности не наблюдается. 
+
+
+
