@@ -69,7 +69,6 @@
 -LastName nvarchar(20)  - фамилия
 -PnoneNumber nvarchar(50) - телефон
 -BirthDate smalldatetime - дата рождения
--Status  nvarchar(50)  - статус (в штате, уволен, ...)
 
 7) EmployeeStates - состояния водителей 
 -EmployeeStateID int - айди
@@ -99,3 +98,12 @@
 -ModelID int  - айди
 -ModelName nvarchar(50)  - название модели
 -FuelRate int - расход на 100 км, литры.
+
+11)EmployeeActions
+-EmployeeActionID bigint - айди
+-EmployeeID int - айди водителя
+-ActionType nvarchar(50) - тип активности (принят, уволен, повторно принят)
+-ActionDate datetime - дата активности
+-Comments nvarchar(500) -комментарий
+
+
