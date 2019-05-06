@@ -51,7 +51,7 @@
 4)Routes   - маршруты
 -RouteID int   - айди 
 -RouteName nvarchar(10)  - название маршрута
--IsDisable bit  -  действующий или нет
+-Status  nvarchar(50)  - статус (активен, не активен, ....)
 
 5)RouteStates  - состояние маршрутов (изменяющиеся данные)
 -RouteStateID int - айди
@@ -69,7 +69,7 @@
 -LastName nvarchar(20)  - фамилия
 -PnoneNumber nvarchar(50) - телефон
 -BirthDate smalldatetime - дата рождения
--IsFired  bit  - уволен или нет
+-Status  nvarchar(50)  - статус (в штате, уволен, ...)
 
 7) EmployeeStates - состояния водителей 
 -EmployeeStateID int - айди
@@ -84,7 +84,7 @@
 -CarID  int   - айди
 -StateNumber nvarchar(50)  - гос.номер
 -RegistrationDate  smalldatetime  - дата регистрации
--IsDisable bit  - списана или нет
+-Status  nvarchar(50)  - статус (активен, списан, ....)
 -ModelID int - айди модели
 
 9) CarStates - состояния автобусов
