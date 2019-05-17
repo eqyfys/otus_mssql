@@ -108,7 +108,7 @@
 
 12) Statuses - справочник статусов
 -StatusID tinyint  -айди
--StatusName nvarchar(20) -название статуса
+-StatusName nvarchar(20) -название статуса (активен/неактивен)
 -Comments nvarchar(200)  
 
 
