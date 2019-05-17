@@ -30,8 +30,8 @@
 -RouteCode nvarchar (10)  - номер карты маршрута
 -ConductorCode nvarchar (10) - номер карты кондутора
 -Summ money  - сумма транзакции
--BskNumber nvarchar(50)  - номер транпортной карты пассажира
--SIgn nvarchar(50)  - цифровая подпись
+-PassengerCardNumber nvarchar(50)  - номер транпортной карты пассажира
+-Sign nvarchar(50)  - цифровая подпись
 
 2)ConductorCards - карты кондуктора
 -CondictorCardID int  -  айди
@@ -51,7 +51,7 @@
 4)Routes   - маршруты
 -RouteID int   - айди 
 -RouteName nvarchar(10)  - название маршрута
--Status  nvarchar(50)  - статус (активен, не активен, ....)
+-StatusID tinyint - из табл. Statuses
 
 5)RouteStates  - состояние маршрутов (изменяющиеся данные)
 -RouteStateID int - айди
@@ -83,7 +83,7 @@
 -CarID  int   - айди
 -StateNumber nvarchar(50)  - гос.номер
 -RegistrationDate  smalldatetime  - дата регистрации
--Status  nvarchar(50)  - статус (активен, списан, ....)
+-StatusID tinyint - из табл. Statuses
 -ModelID int - айди модели
 
 9) CarStates - состояния автобусов
@@ -99,11 +99,16 @@
 -ModelName nvarchar(50)  - название модели
 -FuelRate int - расход на 100 км, литры.
 
-11)EmployeeActions
+11)EmployeeActions  - приказы по кадрам
 -EmployeeActionID bigint - айди
 -EmployeeID int - айди водителя
 -ActionType nvarchar(50) - тип активности (принят, уволен, повторно принят)
 -ActionDate datetime - дата активности
 -Comments nvarchar(500) -комментарий
+
+12) Statuses - справочник статусов
+-StatusID tinyint  -айди
+-StatusName nvarchar(20) -название статуса
+-Comments nvarchar(200)  
 
 
